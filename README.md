@@ -130,7 +130,7 @@ Since the process of evaluating the amortization gap is inherently random, below
 
 We can see below that A-VI is considerably faster than F-VI since we only require a single forward pass through the neural network at inference time.
 
-<img src="./images/mnist_compute.png" width="500"></img>
+<img src="./images/mnist_compute.png" width="750"></img>
 
 
 <hr>
