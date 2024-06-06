@@ -31,9 +31,3 @@ Bayesian inference provides a principled approach for understanding uncertainty 
 ## Future Directions
 
 This project opens up several avenues for future research, including exploring different neural network architectures for the encoder and decoder, investigating the impact of the amortization gap on model performance, and applying amortized variational inference to other types of generative models.
-
-## Acknowledgments
-
-This project was created by [Jordan Deklerk](https://github.com/jordandeklerk). Visit [my website](https://jordandeklerk.github.io) to see a full walk-through of this project.
-
-*For more details on the implementation and results, please refer to the Jupyter Notebook included in this repository.*
