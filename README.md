@@ -29,7 +29,7 @@ pip install -r requirements.txt
 ```
 
 ```bash
-python run_experiments.py
+python main.py
 ```
 
 
