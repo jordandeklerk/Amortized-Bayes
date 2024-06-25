@@ -2,9 +2,9 @@ import torch
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from parser import args
+from src.utils.parser import args
 from experiment import VariationalInferenceExperiment
-from config import dataset_configs, train_loader, test_loader
+from src.utils.config import dataset_configs, train_loader, test_loader
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

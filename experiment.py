@@ -1,6 +1,6 @@
 import numpy as np
 import os
-from model import Model
+from src.model.model import Model
 from train import train
 
 

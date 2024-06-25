@@ -4,7 +4,7 @@ from torchvision.datasets import SVHN
 from torchvision.datasets import CIFAR10
 from torchvision.datasets import MNIST
 from torchvision.datasets import FashionMNIST
-from parser import args
+from src.utils.parser import args
 
 dataset_path = '~/datasets'
 

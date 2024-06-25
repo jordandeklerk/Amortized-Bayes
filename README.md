@@ -11,35 +11,48 @@ Amortized variational inference (A-VI) has emerged as a promising approach to en
 - A-VI, when implemented with sufficiently deep neural networks, can achieve the same evidence lower bound (ELBO) and reconstruction mean squared error (MSE) as F-VI while being 2 to 3 times computationally faster.
 - These results highlight the potential of A-VI in addressing the amortization interpolation problem and suggest that a deep encoder-decoder linear neural network with full Bayesian inference over the latent variables can effectively approximate an ideal inference function.
 
-## Repository Contents
-
-- **Numerical Experiments**: Scripts and notebooks detailing the experiments conducted, including the comparison of A-VI with F-VI and constant-VI across different datasets.
-- **Models**: Implementation of the Bayesian deep generative models using PyTorch.
-- **Results**: Detailed results and analysis including comparisons of ELBO and MSE across different models and configurations.
-- **Utilities**: Helper functions and utilities for data handling, model training, and evaluation.
-
 ## Getting Started
 
 To get started with this project, clone the repository and install the required dependencies:
 
 ```bash
-git clone https://github.com/your-repository/amortized-bayes.git
-cd amortized-bayes
+git clone https://github.com/jordandeklerk/Amortized-Bayes.git
+cd Amortized-Bayes
 pip install -r requirements.txt
 ```
 
+Then run the `main.py` script:
 ```bash
 python main.py
 ```
+## Project Structure
 
-
-## Dependencies
-
-- Python 3.11
-- PyTorch 2.1.1
-- NumPy
-- Matplotlib
-- Seaborn
+├── experiment.py
+├── images
+│   ├── fmnist_comp.png
+│   ├── fmnist_elbo.png
+│   ├── fmnist_mse.png
+│   ├── fmnist_mse_test.png
+│   ├── index.md
+│   ├── mnist_comp.png
+│   ├── mnist_elbo.png
+│   ├── mnist_mse.png
+│   ├── mnist_mse_test.png
+│   ├── re1.png
+│   ├── re2.png
+│   ├── reparm.png
+│   ├── reparm4.png
+│   ├── vae.png
+│   └── variational.png
+├── main.py
+├── src
+│   ├── model
+│   │   └── model.py
+│   └── utils
+│       ├── config.py
+│       ├── optimizer.py
+│       └── parser.py
+└── train.py
 
 ## Main Results
 
