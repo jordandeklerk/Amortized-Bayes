@@ -1,6 +1,9 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import seaborn as sns
+import matplotlib.pyplot as plt
+import os
 
 
 class Encoder(nn.Module):
@@ -258,3 +261,54 @@ class Model(nn.Module):
         nu_mean_z, nu_sd_z_log = self.variational_z(x)
         mu = Decoder(self.nu_mean_theta, nu_mean_z, self.z_dim, self.like_dim, self.x_dim)
         return torch.mean((mu - x)**2)
+    
+    def reconstruct_and_plot_images(self, data_loader, num_images=5):
+        """
+        Reconstructs and plots a set of images using the trained model.
+
+        This method takes a batch of images from the provided data loader, passes them through
+        the encoder to get the latent representation, and then reconstructs the images using
+        the decoder. It plots both the original and reconstructed images side by side for comparison.
+        """
+        self.eval()
+        images, labels = next(iter(data_loader))
+
+        original_images = images[:num_images]
+        labels = labels[:num_images]
+
+        if len(original_images.size()) > 2:
+            original_images = original_images.view(original_images.size(0), -1)
+
+        original_images = original_images.to(next(self.parameters()).device)
+
+        nu_mean_z, nu_sd_z_log = self.variational_z(original_images)
+        nu_sd_z = torch.exp(nu_sd_z_log)
+
+        z, _ = self.reparam(nu_mean_z, nu_sd_z, self.nu_mean_theta, torch.exp(self.nu_sd_theta_log), 1, num_images)
+        with torch.no_grad():
+            reconstructed_images = Decoder(self.nu_mean_theta, z, self.z_dim, self.like_dim, self.x_dim).view_as(original_images).cpu()
+
+        if len(images.size()) > 2:
+            reconstructed_images = reconstructed_images.view(num_images, *images.size()[1:])
+            original_images = original_images.view(num_images, *images.size()[1:])
+
+        sns.set(style='white', context='talk', palette='colorblind')  # Set the seaborn style
+
+        fig, axes = plt.subplots(nrows=2, ncols=num_images, figsize=(15, 8))
+
+        for i in range(num_images):
+            # Plot originals with true class labels
+            original_image = original_images[i].squeeze().cpu().numpy()
+            axes[0, i].imshow(original_image, cmap='gray', aspect='auto')
+            axes[0, i].set_title(f'Original: {labels[i].item()}')
+            axes[0, i].axis('off')
+
+            # Plot reconstructed with true class labels
+            reconstructed_image = reconstructed_images[i].squeeze().numpy()
+            axes[1, i].imshow(reconstructed_image, cmap='gray', aspect='auto')
+            axes[1, i].set_title(f'Reconstructed: {labels[i].item()}')
+            axes[1, i].axis('off')
+
+        plt.tight_layout()
+        plt.savefig(os.path.join("/content/Amortized_Bayes/Results", f"{data_set}_reconstructed.png"))
+        plt.show()
