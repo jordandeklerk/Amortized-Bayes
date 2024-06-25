@@ -27,6 +27,7 @@ python main.py
 ```
 ## Project Structure
 
+```bash
 ├── experiment.py
 ├── images
 │   ├── fmnist_comp.png
@@ -53,6 +54,7 @@ python main.py
 │       ├── optimizer.py
 │       └── parser.py
 └── train.py
+```
 
 ## Main Results
 
