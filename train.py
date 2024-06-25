@@ -5,6 +5,7 @@ import wandb
 import random
 import time
 from src.utils.parser import args
+from src.utils.optimizer import AdamOptimizer
 
 def train(seed, model, x, n_epochs, n_obs, batch_size, print_output=False, lr=args.lr, weight_decay=args.weight_decay,
            save_mse=False, save_mse_test=False, x_test=None):
