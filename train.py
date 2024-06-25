@@ -31,14 +31,14 @@ def train(seed, model, x, n_epochs, n_obs, batch_size, print_output=False, lr=ar
     - mse_saved (numpy.ndarray): MSE values for the training dataset for each epoch if `save_mse` is True; otherwise, an empty array.
     - mse_saved_test (numpy.ndarray): MSE values for the test dataset for each epoch if `save_mse_test` is True and `x_test` is provided; otherwise, an empty array.
     """
-    wandb.init(project="project_name", entity="entity_name")
-    wandb.config = {
-        "learning_rate": lr,
-        "epochs": n_epochs,
-        "batch_size": batch_size,
-        "seed": seed,
-        "weight_decay": weight_decay
-    }
+    # wandb.init(project="project_name", entity="entity_name")
+    # wandb.config = {
+    #     "learning_rate": lr,
+    #     "epochs": n_epochs,
+    #     "batch_size": batch_size,
+    #     "seed": seed,
+    #     "weight_decay": weight_decay
+    # }
 
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
@@ -77,19 +77,19 @@ def train(seed, model, x, n_epochs, n_obs, batch_size, print_output=False, lr=ar
             loss.backward()
             optimizer.step()
 
-            wandb.log({"batch_loss": loss.item()})
+            # wandb.log({"batch_loss": loss.item()})
 
         if save_mse:
             mse = model.reconstruction_mse(x).item()
             mse_saved[epoch] = mse
 
-            wandb.log({"epoch": epoch, "mse_train": mse})
+            # wandb.log({"epoch": epoch, "mse_train": mse})
 
         if save_mse_test and x_test is not None:
             mse_test = model.reconstruction_mse(x_test).item()
             mse_saved_test[epoch] = mse_test
 
-            wandb.log({"epoch": epoch, "mse_test": mse_test})
+            # wandb.log({"epoch": epoch, "mse_test": mse_test})
 
         if epoch % 500 == 0 and print_output:
             print(f"\tEpoch: {epoch} \tLoss: {loss.item()}")
@@ -99,6 +99,6 @@ def train(seed, model, x, n_epochs, n_obs, batch_size, print_output=False, lr=ar
     end_time = time.time()
     run_time = end_time - start_time
 
-    wandb.log({"total_runtime": run_time})
+    # wandb.log({"total_runtime": run_time})
 
     return model, loss_saved, run_time, mse_saved, mse_saved_test
