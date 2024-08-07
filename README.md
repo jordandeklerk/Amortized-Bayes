@@ -1,10 +1,38 @@
 # Closing the Amortization Gap in Bayesian Deep Generative Models
 
-This project explores the integration of amortized variational inference (A-VI) with deep Bayesian Variational Autoencoders (VAEs). We delve into the theoretical foundations and practical applications to close the amortization gap in Bayesian modeling. Through comprehensive numerical experiments, we demonstrate how A-VI enhances computational efficiency and accuracy in modeling on benchmark imaging datasets like MNIST and FashionMNIST.
+Amortized variational inference (A-VI) has emerged as a promising approach to enhance the efficiency of Bayesian deep generative models. In this project, we aim to investigate the effectiveness of A-VI in closing the amortization gap between A-VI and traditional variational inference methods, such as factorized variational inference (F-VI), or mean-field variational inference. We conduct numerical experiments on benchmark imaging datasets to compare the performance of A-VI with varying neural network architectures against F-VI and constant-VI.
+
+Our findings demonstrate that A-VI, when implemented with sufficiently deep neural networks, can achieve the same evidence lower bound (ELBO) and reconstruction mean squared error (MSE) as F-VI while being 2 to 3 times computationally faster. These results highlight the potential of A-VI in addressing the amortization interpolation problem and suggest that a deep encoder-decoder linear neural network with full Bayesian inference over the latent variables can effectively approximate an ideal inference function. This work paves the way for more efficient and scalable Bayesian deep generative models.
 
 ## Overview
 
-Amortized variational inference (A-VI) has emerged as a promising approach to enhance the efficiency of Bayesian deep generative models. This project investigates the effectiveness of A-VI in closing the amortization gap between A-VI and traditional variational inference methods, such as factorized variational inference (F-VI), or mean-field variational inference. We conduct numerical experiments to compare the performance of A-VI with varying neural network architectures against F-VI and constant-VI.
+In the Bayesian paradigm, statistical inference regarding unknown variables is predicated on computations involving posterior probability densities. Due to the often intractable nature of these densities, which typically lack an analytic form, estimation becomes crucial. Classical methods for estimating the posterior distribution in Bayesian inference such as MCMC are known to be computationally expensive at test time as they rely on repeated evaluations of the likelihood function and, therefore, require a new set of likelihood evaluations for each observation. In contrast, Variational Inference (VI) offers a compelling solution by recasting the difficult task of estimating complex posterior densities into a more manageable optimization problem. The essence of VI lies in selecting a parameterized distribution family, $\mathcal{Q}$, and identifying the member that minimizes the Kullback-Leibler (KL) divergence from the posterior
+
+$$
+\begin{equation}
+q^* = \arg \min _{q \in \mathcal{Q}} \mathrm{KL}(q(\theta, \mathbf{z}) \| p(\theta, \mathbf{z} \mid \mathbf{x})).
+\end{equation}
+$$
+
+This process enables the approximation of the posterior with $q^*$, thereby delineating the VI objective to entail the selection of an appropriate variational family $\mathcal{Q}$ for optimization. Common practice in VI applications involves the adoption of the factorized, or mean-field, family. This family is characterized by the independence of the variables
+
+```math
+\begin{equation}
+\mathcal{Q}_{\mathrm{F}}=\left\{q: q(\theta, \mathbf{z})=q_0(\theta) \prod_{n=1}^N q_n\left(z_n\right)\right\},
+\end{equation}
+```
+
+wherein each latent variable is represented by a distinct factor $q_n$.
+
+Contrary to the VI framework, the amortized family leverages a stochastic inference function to dictate the variational distribution of each latent variable $z_n$, typically instantiated through a neural network, facilitating the parameter mapping for each latent variable's approximating factor $q_n(z_n)$:
+
+```math
+\begin{equation}
+\mathcal{Q}_{\mathrm{A}}=\left\{q: q(\theta, \mathbf{z})=q_0(\theta) \prod_{n=1}^N q\left(z_n ; f_\phi\left(x_n\right)\right)\right\}.
+\end{equation}
+```
+
+This paradigm, known as _amortized variational inference_ (A-VI), optimizes the approximation of the posterior and the inference function simultaneously. Therefore, inference on a single observation can be performed efficiently through a single forward pass through the neural network, framing Bayesian inference as a prediction problem: for _any_ observation, the neural network is trained to predict the posterior distribution, or a quantity that allows the network to infer the posterior without any further simulations.
 
 ## Key Findings
 
